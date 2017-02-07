@@ -5,7 +5,8 @@ import os
 
 # set up jinja
 template_dir = os.path.join(os.path.dirname(__file__), "templates")
-jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir))
+jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
+                               autoescape = True)
 
 # a list of movies that nobody should be allowed to watch
 terrible_movies = [
@@ -56,9 +57,10 @@ class AddMovie(webapp2.RequestHandler):
 
         # TODO 1
         # Use a template to render the confirmation message
-
-        self.response.write("Under construction...")
-
+        # render confirmation page
+        t = jinja_env.get_template("add.html")
+        content = t.render(new_movie=new_movie)
+        self.response.write(content)
 
 class CrossOffMovie(webapp2.RequestHandler):
     """ Handles requests coming in to '/cross-off'
